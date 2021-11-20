@@ -24,6 +24,13 @@
 .emirp{
 	background-color: red;
 }
+.reversed_prime{
+	background-color: lightgreen;
+}
+.too_big{
+	border: 1px dotted black;
+	background-color: #cfcfcf;
+}
 
 pre {
     white-space: pre-wrap;       /* Since CSS 2.1 */
@@ -44,12 +51,15 @@ the program can detect primes like this.
 It can also detect emirps like patienceisavirtue and palindromic primes like R</textarea><br>
 <small class="text-muted">Hover over a word below to see the GP-Sum and the type of prime it is.</small>
 <pre id="out"></pre>
-<div>Word Total: <span id="sum"></span><small class="text-muted">(max detected prime is 1,299,709)</small></div>
+<div>Word Total: <span id="sum"></span><small class="text-muted">(max detected prime is 9,007,199,254,740,881.  Primes over 1,299,709 may take longer to check.)</small></div>
 <div>Letter Total: <span id="suml"></span><small class="text-muted">(this may differ due to combining runes like "th")</small></div>
+<div>Parable Number: <span id="sump"></span><small class="text-muted">(word sums of each line, multiplied)</small></div>
 <hr style="margin-bottom:3em">
 Key:
+<span class="word">Non-prime GPSum</span>
 <span class="word prime">Prime GPSum</span>
 <span class="word palindromic">Palindromic Prime GPSum</span>
 <span class="word emirp">Emirp GPSum</span>
+<span class="word reversed_prime">Reversed Prime GPSum</span>
 </body>
 </html>
