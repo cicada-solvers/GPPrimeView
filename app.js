@@ -26,10 +26,11 @@ function tick(){
 	window.hashcode=hashcode;
 	
 	var words = text.split(/\W+/).filter(x => x);
-	var total = gpsum(text);
+	var total = 0;
 	window.outelem.innerText = '';
 	for(let word of words){
 		let wordsum = gpsum(word);
+		total+=wordsum;
 		let primetype = getprimetype(wordsum);
 		let span = document.createElement('span');
 		let classes='word '+primetype;
@@ -47,7 +48,7 @@ function tick(){
 	setTimeout(tick,250);
 }
 
-function gpsum(str){
+function gpsum(str){ //Note: this can only be used for words because 't h' would become 'th'
 	return +LiberPrimus.gematriaSum(str.replaceAll(/[^a-zA-Z]/g,''));
 }
 function getprimetype(num){
