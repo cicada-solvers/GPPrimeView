@@ -1,0 +1,37 @@
+.word{
+    padding:0.25em;
+    background-color: #afafaf;
+    border-radius:0.25em;
+    line-height: 2.0em;
+}
+
+.prime{
+    background-color: yellow;
+}
+.palindromic{
+    background-color: orange;
+}
+.emirp{
+    background-color: red;
+}
+.reversed_prime{
+    background-color: lightgreen;
+}
+.too_big{
+    border: 1px dotted black;
+    background-color: #cfcfcf;
+}
+.too_big::before{
+    content:'~ '
+}
+
+pre {
+    white-space: pre-wrap;       /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+.text-muted{
+    color: gray;
+}
