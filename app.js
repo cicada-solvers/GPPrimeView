@@ -31,22 +31,40 @@ function tick(){
 	window.hashcode=hashcode;
 	
 	let totall = gpsum(text);
-	let parable = parablenumber(text);
+	//let parable = parablenumber(text);
+	let parable_linesums = [];
 	
-	
-	var words = getwords(text);
-	var total = 0;
-	window.outelem.innerText = '';
-	for(let word of words){
-		let wordsum = gpsum(word);
-		total+=wordsum;
-		let span = document.createElement('span');
-		this.setElemFromPrime(span,wordsum,word,wordsum)
-		window.outelem.appendChild(span);
+	var lines = getlines(text);
+	outelem.innerText = '';
+	let total = 0;
+	for(let line of lines){
+		let row = document.createElement('tr');
+		let wordselem = document.createElement('td');
+		let linestatselem = document.createElement('td');
+		wordselem.setAttribute('class','line-words');
+		linestatselem.setAttribute('class','line-stats');
+		let words = getwords(line);
+		let linetotall = gpsum(line);
+		let linetotal = 0;
+		for(let word of words){
+			let wordsum = gpsum(word);
+			total+=wordsum;
+			linetotal+=wordsum;
+			let span = document.createElement('span');
+			this.setElemFromPrime(span,wordsum,word,wordsum)
+			wordselem.appendChild(span);
+		}
+		parable_linesums.push(linetotal);
+		if(linetotall!==linetotal) linetotal+='/'+linetotall;
+		linestatselem.innerText=linetotal;
+		row.appendChild(wordselem);
+		row.appendChild(linestatselem);
+		outelem.appendChild(row);
 	}
+
 	this.setElemFromPrime(sumelem,total);
 	this.setElemFromPrime(sumlelem,totall);
-	this.setElemFromPrime(sumpelem,parable);
+	this.setElemFromPrime(sumpelem,product(parable_linesums));
 	setTimeout(tick,250);
 }
 
@@ -67,23 +85,8 @@ function setElemDetails(elem,text,classes,title){
 	elem.innerText = text;
 }
 
-function parablenumber(str){
-	let lines = getlines(str);
-	console.log('parable lines',lines);
-	let parable = 0;
-	for(let line of lines){
-		let words = getwords(line);
-		console.log(' words',words);
-		let wordsum = 0;
-		for(let word of words) wordsum+=gpsum(word);
-		console.log(' wordsum',wordsum);
-		if(wordsum>0){
-			if(parable===0) parable=wordsum;
-			else parable *= wordsum;
-		}
-		console.log(' parable',wordsum);
-	}
-	return parable;
+function product(nums){
+	return nums.reduce((a, b)=> a*b, 1);
 }
 
 function getlines(str){
