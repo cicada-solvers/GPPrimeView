@@ -40,37 +40,31 @@ function tick(){
 	for(let word of words){
 		let wordsum = gpsum(word);
 		total+=wordsum;
-		let primetype = getprimetype(wordsum);
 		let span = document.createElement('span');
-		let classes='word '+primetype;
-		span.setAttribute('class',classes);
-		span.setAttribute('style','margin-right: 0.5em');
-		span.setAttribute('title',wordsum+"\r\n"+primetype);
-		span.innerText=word;
+		this.setElemFromPrime(span,wordsum,word,wordsum)
 		window.outelem.appendChild(span);
 	}
-	{
-		let primetype = getprimetype(total);
-		let classes='word '+primetype;
-		window.sumelem.setAttribute('class',classes);
-		window.sumelem.setAttribute('title',primetype);
-		window.sumelem.innerText = total;
-	}
-	{
-		let primetype = getprimetype(totall);
-		let classes='word '+primetype;
-		window.sumlelem.setAttribute('class',classes);
-		window.sumlelem.setAttribute('title',primetype);
-		window.sumlelem.innerText = totall;
-	}
-	{
-		let primetype = getprimetype(parable);
-		let classes='word '+primetype;
-		window.sumpelem.setAttribute('class',classes);
-		window.sumpelem.setAttribute('title',primetype);
-		window.sumpelem.innerText = parable;
-	}
+	this.setElemFromPrime(sumelem,total);
+	this.setElemFromPrime(sumlelem,totall);
+	this.setElemFromPrime(sumpelem,parable);
 	setTimeout(tick,250);
+}
+
+function setElemFromPrime(elem,number,overrideText=null,beforeTitle=null,afterTitle=null){
+	//console.log('setElemFromPrime',elem,number,overrideText,beforeTitle);
+	let primetype = getprimetype(number);
+	let classes='word '+primetype;
+	let title = primetype;
+	if(beforeTitle!==null) title=beforeTitle+"\r\n"+title;
+	if(afterTitle!=null) title+="\r\n"+afterTitle;
+	this.setElemDetails(elem,overrideText??number,classes,title);
+}
+
+function setElemDetails(elem,text,classes,title){
+	//console.log('setElemDetails',elem,text,classes,title);
+	elem.setAttribute('class',classes);
+	elem.setAttribute('title',title);
+	elem.innerText = text;
 }
 
 function parablenumber(str){
