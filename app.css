@@ -36,3 +36,7 @@ pre {
 .text-muted{
     color: gray;
 }
+.line-stats{
+    border-left: 1px solid gray;
+    padding-left: 0.25em;
+}
