@@ -13,6 +13,7 @@ function init(){
 	window.inelem = document.getElementById('in');
 	window.outelem = document.getElementById('out');
 	window.sumelem = document.getElementById('sum');
+	window.sumlelem = document.getElementById('suml');
 	window.hashcode = -1;
 	setTimeout(tick,250);
 }
@@ -21,6 +22,7 @@ function init(){
 function tick(){
 	var text = window.inelem.value;
 	let hashcode = text.hashCode();
+	let totall = gpsum(text);
 	
 	if(window.hashcode === hashcode) return setTimeout(tick,250);
 	window.hashcode=hashcode;
@@ -40,11 +42,20 @@ function tick(){
 		span.innerText=word;
 		window.outelem.appendChild(span);
 	}
-	let primetype = getprimetype(total);
-	let classes='word '+primetype;
-	window.sumelem.setAttribute('class',classes);
-	window.sumelem.setAttribute('title',primetype);
-	window.sumelem.innerText = total;
+	{
+		let primetype = getprimetype(total);
+		let classes='word '+primetype;
+		window.sumelem.setAttribute('class',classes);
+		window.sumelem.setAttribute('title',primetype);
+		window.sumelem.innerText = total;
+	}
+	{
+		let primetype = getprimetype(totall);
+		let classes='word '+primetype;
+		window.sumlelem.setAttribute('class',classes);
+		window.sumlelem.setAttribute('title',primetype);
+		window.sumlelem.innerText = totall;
+	}
 	setTimeout(tick,250);
 }
 
