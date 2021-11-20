@@ -40,9 +40,11 @@ function tick(){
 	for(let line of lines){
 		let row = document.createElement('tr');
 		let wordselem = document.createElement('td');
-		let linestatselem = document.createElement('td');
+		let linestatscell = document.createElement('td');
+		let linestat1 = document.createElement('span');
+		let linestat2 = document.createElement('span');
 		wordselem.setAttribute('class','line-words');
-		linestatselem.setAttribute('class','line-stats');
+		linestatscell.setAttribute('class','line-stats sep-left');
 		let words = getwords(line);
 		let linetotall = gpsum(line);
 		let linetotal = 0;
@@ -55,10 +57,12 @@ function tick(){
 			wordselem.appendChild(span);
 		}
 		parable_linesums.push(linetotal);
-		if(linetotall!==linetotal) linetotal+='/'+linetotall;
-		linestatselem.innerText=linetotal;
+		setElemFromPrime(linestat1,linetotal);
+		setElemFromPrime(linestat2,linetotall);
+		linestatscell.appendChild(linestat1);
+		linestatscell.appendChild(linestat2);
 		row.appendChild(wordselem);
-		row.appendChild(linestatselem);
+		row.appendChild(linestatscell);
 		outelem.appendChild(row);
 	}
 
@@ -68,19 +72,19 @@ function tick(){
 	setTimeout(tick,250);
 }
 
-function setElemFromPrime(elem,number,overrideText=null,beforeTitle=null,afterTitle=null){
+function setElemFromPrime(elem,number,overrideText=null,beforeTitle=null,afterTitle=null,addClasses=''){
 	//console.log('setElemFromPrime',elem,number,overrideText,beforeTitle);
 	let primetype = getprimetype(number);
 	let classes='word '+primetype;
 	let title = primetype;
 	if(beforeTitle!==null) title=beforeTitle+"\r\n"+title;
 	if(afterTitle!=null) title+="\r\n"+afterTitle;
-	this.setElemDetails(elem,overrideText??number,classes,title);
+	this.setElemDetails(elem,overrideText??number,classes,title,addClasses);
 }
 
-function setElemDetails(elem,text,classes,title){
+function setElemDetails(elem,text,classes,title,addClasses=''){
 	//console.log('setElemDetails',elem,text,classes,title);
-	elem.setAttribute('class',classes);
+	elem.setAttribute('class',classes+' '+addClasses);
 	elem.setAttribute('title',title);
 	elem.innerText = text;
 }
