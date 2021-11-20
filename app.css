@@ -18,13 +18,20 @@
 .reversed_prime{
     background-color: lightgreen;
 }
+
+
+.fibonacci_number{
+    border: 1px solid blue;
+}
+
 .too_big{
-    border: 1px dotted black;
-    background-color: #cfcfcf;
+    border: 1px dotted black !important;
+    background-color: #cfcfcf !important;
 }
 .too_big::before{
     content:'~ '
 }
+
 
 pre {
     white-space: pre-wrap;       /* Since CSS 2.1 */

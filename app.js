@@ -75,8 +75,11 @@ function tick(){
 function setElemFromPrime(elem,number,overrideText=null,beforeTitle=null,afterTitle=null,addClasses=''){
 	//console.log('setElemFromPrime',elem,number,overrideText,beforeTitle);
 	let primetype = getprimetype(number);
-	let classes='word '+primetype;
+	let addtltypes = getaddtltypes(number);
+	let classes='word '+primetype+' '+(addtltypes.join(' '));
+	console.log('getaddtl ',number,addtltypes,classes)
 	let title = primetype;
+	if(addtltypes.length) title+="\r\n"+(addtltypes.join("\r\n"))
 	if(beforeTitle!==null) title=beforeTitle+"\r\n"+title;
 	if(afterTitle!=null) title+="\r\n"+afterTitle;
 	this.setElemDetails(elem,overrideText??number,classes,title,addClasses);
@@ -117,6 +120,23 @@ function getprimetype(num){
 	if(f_isprime) return 'prime';
 	if(r_isprime) return 'reversed_prime';
 	return '';
+}
+function getaddtltypes(num){
+	let types = [];
+	if(isFibonacci(num)) types.push('fibonacci_number');
+	return types;
+}
+
+function isFibonacci(n)
+{
+	return isPerfectSquare(5*n*n + 4) ||
+		isPerfectSquare(5*n*n - 4);
+}
+
+function isPerfectSquare(x)
+{
+	let s = parseInt(""+Math.sqrt(x));
+	return ((s*s) == x);
 }
 
 function isprime(num){
