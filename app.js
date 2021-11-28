@@ -16,6 +16,7 @@ function init(){
 	window.sumelem = document.getElementById('sum');
 	window.sumlelem = document.getElementById('suml');
 	window.sumpelem = document.getElementById('sump');
+	window.compelem = document.getElementById('completions');
 	window.hashcode = -1;
 	window.biggestprime = window.primes[window.primes.length-1];
 	setTimeout(tick,250);
@@ -69,8 +70,60 @@ function tick(){
 	this.setElemFromPrime(sumelem,total);
 	this.setElemFromPrime(sumlelem,totall);
 	this.setElemFromPrime(sumpelem,product(parable_linesums));
+	setTimeout(completeThePrime,1);
 	setTimeout(tick,250);
 }
+
+function completeThePrime(){
+	let comps = getPrimeCompletions();
+	window.compelem.innerText='';
+	for(let i=1000;i>=1;i/=10){
+		for(let wordinfo of comps[i]){
+
+			let span = document.createElement('span');
+			this.setElemFromPrime(span,wordinfo.subtotal,wordinfo.word,"word: "+wordinfo.wordsum+"\r\nnew total: "+wordinfo.subtotal);
+			window.compelem.appendChild(span);
+		}
+	}
+}
+
+
+function getPrimeCompletions(){
+	
+	
+	var text = window.inelem.value;
+	let words = getwords(text);	
+	let total = 0;
+	for(let word of words){
+		let wordsum = gpsum(word);
+		total+=wordsum;
+	}
+	
+	let completions = {1:[],10:[],100:[],1000:[]};
+	
+	
+	let iStart = parseInt((Math.random()*10000000)%(window.words.length));
+	let iStep = parseInt((Math.random()*1000)%(window.words.length));
+	let i;
+	for(i=iStart; !(i!==iStart && (i%window.words.length)==iStart); i+=iStep){
+		let word = window.words[i%window.words.length];
+		if(typeof word ==='undefined'){
+			console.log(iStart,iStep,i);
+			throw 'what';
+		}
+		let wordsum = gpsum(word);
+		let subtotal = total + wordsum;
+		let primetype = getprimetypeN(subtotal);
+		if(primetype>=1){
+			let wordinfo = {word:word,subtotal:subtotal,wordsum:wordsum};
+			completions[primetype].push(wordinfo);
+			if(completions[primetype].length>=25) break;
+		}
+		if(i%1000==0) console.log(i);
+	}
+	return completions;
+}
+
 
 function setElemFromPrime(elem,number,overrideText=null,beforeTitle=null,afterTitle=null,addClasses=''){
 	//console.log('setElemFromPrime',elem,number,overrideText,beforeTitle);
@@ -108,6 +161,19 @@ function gpsum(str){ //Note: this can only be used for words because 't h' would
 	return +LiberPrimus.gematriaSum(str.replaceAll(/[^a-zA-Z]/g,''));
 }
 
+function getprimetypeN(num){
+	if(!Number.isSafeInteger(num)) return -1;
+	let rnum = +reverseString(""+num);
+	let f_isprime = isprime(num);
+	let r_isprime = isprime(rnum);
+	let ispalin = rnum===num;
+	
+	if(f_isprime && r_isprime && ispalin) return 100;
+	if(f_isprime && r_isprime) return 1000;
+	if(f_isprime) return 10;
+	if(r_isprime) return 1;
+	return 0;
+}
 function getprimetype(num){
 	if(!Number.isSafeInteger(num)) return 'too_big';
 	let rnum = +reverseString(""+num);
